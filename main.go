@@ -8,5 +8,5 @@ import (
 func main() {
 	inMemoryStore := storage.NewInMemoryStorage()
 	processor := &core.CommandProcessor{Cache: inMemoryStore}
-	core.NewServer(core.ServerOpts{Port: 8000}, processor).Start()
+	core.NewServer(core.ServerOpts{Port: 8001}, processor).Start()
 }

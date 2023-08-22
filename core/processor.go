@@ -7,6 +7,7 @@ import (
 	"redis-lite/storage"
 	"regexp"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -43,6 +44,7 @@ func (cp *CommandProcessor) ProcessKeys(request Request) (Response, error) {
 
 	pattern := request.Params[0]
 	keys := cp.Cache.Keys()
+	fmt.Println(keys)
 
 	if len(keys) == 0 {
 		return Response{Success: false, Value: []byte("empty list or set")}, nil
@@ -50,11 +52,13 @@ func (cp *CommandProcessor) ProcessKeys(request Request) (Response, error) {
 
 	matchedKeys := make([]string, 0)
 
-	//regexp.Compile("^[a-zA-Z0-9_.-\\?]*$")
+	pattern = strings.ReplaceAll(pattern, "*", ".*")
+	pattern = strings.ReplaceAll(pattern, "?", ".?")
 
 	for _, key := range keys {
-
-		matched, _ := regexp.MatchString(pattern, key)
+		matched, err := regexp.MatchString(pattern, key)
+		fmt.Println("pattern %s ", pattern, " key %s ", key,
+			" matched %v ", matched, " err %v ", err)
 
 		if matched {
 			matchedKeys = append(matchedKeys, key)
