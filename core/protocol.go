@@ -58,6 +58,7 @@ func (c Command) isParamValid(params []string) bool {
 }
 
 func parseProtocol(input string) (Request, error) {
+	input = strings.TrimSpace(input)
 	tokens := strings.Split(input, " ")
 
 	if len(tokens) == 0 {
